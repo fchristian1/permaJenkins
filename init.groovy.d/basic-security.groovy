@@ -4,8 +4,8 @@ import jenkins.model.*
 import hudson.security.*
 import hudson.util.*
 import jenkins.install.*
+import com.michelin.cio.hudson.plugins.rolestrategy.*
 
-// Jenkins-Instanz abrufen
 def instance = Jenkins.getInstance()
 
 // Überprüfen, ob der Admin-Benutzer bereits existiert
@@ -18,19 +18,19 @@ if (adminUser == null) {
     hudsonRealm.createAccount("admin", "admin")
     instance.setSecurityRealm(hudsonRealm)
 
-    // Berechtigungen setzen
-    def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
-    strategy.setAllowAnonymousRead(false)
-    instance.setAuthorizationStrategy(strategy)
+    // Rollenbasierte Berechtigungen setzen
+    def roleBasedStrategy = new RoleBasedAuthorizationStrategy()
+    instance.setAuthorizationStrategy(roleBasedStrategy)
 
-    // Sicherheitsrollen auf "Legacy" setzen
-    def legacyStrategy = new LegacyAuthorizationStrategy()
-    instance.setAuthorizationStrategy(legacyStrategy)
+    // Admin-Rolle erstellen und Berechtigungen zuweisen
+    def adminRole = new Role("admin", ".*", [Permission.all()])
+    roleBasedStrategy.addRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole)
+    roleBasedStrategy.assignRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole, "admin")
 
     // Änderungen speichern
     instance.save()
 
-    println("Admin-User 'admin' mit Passwort 'admin' wurde erfolgreich erstellt und Sicherheitsrollen auf 'Legacy' gesetzt!")
+    println("Admin-User 'admin' mit Passwort 'admin' wurde erfolgreich erstellt und Rollenbasierte Berechtigungen gesetzt!")
 } else {
     println("Admin-User 'admin' existiert bereits. Keine Änderungen vorgenommen.")
 }
