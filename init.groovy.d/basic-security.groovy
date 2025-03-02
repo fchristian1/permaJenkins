@@ -11,16 +11,16 @@ def instance = Jenkins.getInstance()
 // Überprüfen, ob der Admin-Benutzer bereits existiert
 def hudsonRealm = instance.getSecurityRealm()
 def adminUser = hudsonRealm.getUser("admin")
+instance.setSecurityRealm(hudsonRealm)
+
+// Rollenbasierte Berechtigungen setzen
+def roleBasedStrategy = new RoleBasedAuthorizationStrategy()
+instance.setAuthorizationStrategy(roleBasedStrategy)
 
 if (adminUser == null) {
     // Sicherheitsrealm setzen (Benutzer und Passwort)
     hudsonRealm = new HudsonPrivateSecurityRealm(false)
     hudsonRealm.createAccount("admin", "admin")
-    instance.setSecurityRealm(hudsonRealm)
-
-    // Rollenbasierte Berechtigungen setzen
-    def roleBasedStrategy = new RoleBasedAuthorizationStrategy()
-    instance.setAuthorizationStrategy(roleBasedStrategy)
 
     // Admin-Rolle erstellen und Berechtigungen zuweisen
     def adminRole = new Role("admin", ".*", [Permission.all()])
