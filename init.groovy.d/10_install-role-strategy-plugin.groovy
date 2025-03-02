@@ -17,7 +17,7 @@ def collectDependencies(pluginName, collectedDependencies, updateCenter, logger)
     def pluginInfo = updateCenter.getPlugin(pluginName)
     if (pluginInfo != null) {
         pluginInfo.dependencies.each { dependency ->
-            def dependencyName = dependency.shortName ?: dependency.plugin?.name
+            def dependencyName = dependency.plugin?.name
             if (dependencyName) {
                 if (!collectedDependencies.contains(dependencyName)) {
                     collectedDependencies.add(dependencyName)
