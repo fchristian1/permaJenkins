@@ -33,7 +33,7 @@ def installPluginWithDependencies(pluginName, installedPlugins, logger, updateCe
         def pluginInfo = updateCenter.getPlugin(pluginName)
         if (pluginInfo != null) {
             pluginInfo.dependencies.each { dependency ->
-                installPluginWithDependencies(dependency.shortName, installedPlugins, logger)
+                installPluginWithDependencies(dependency.plugin.name, installedPlugins, logger, updateCenter)
             }
         }
     } else {
