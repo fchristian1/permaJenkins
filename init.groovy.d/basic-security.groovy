@@ -28,9 +28,9 @@ if (adminUser == null) {
     roleBasedStrategy.assignRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole, "admin")
 
     // Änderungen speichern
-    instance.save()
 
     println("Admin-User 'admin' mit Passwort 'admin' wurde erfolgreich erstellt und Rollenbasierte Berechtigungen gesetzt!")
 } else {
     println("Admin-User 'admin' existiert bereits. Keine Änderungen vorgenommen.")
 }
+instance.save()
