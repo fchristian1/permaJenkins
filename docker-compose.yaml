@@ -23,3 +23,5 @@ services:
 volumes:
     jenkins_home:
         driver: local
+    grafana_data:
+        driver: local
