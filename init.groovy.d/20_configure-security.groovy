@@ -8,10 +8,13 @@ def pluginManager = instance.getPluginManager()
 
 // Überprüfen, ob das 'role-strategy' Plugin installiert ist
 def plugin = pluginManager.getPlugin("role-strategy")
-if (plugin == null) {
-    logger.warning("'role-strategy' plugin is not installed. Skipping security configuration.")
+if (plugin == null || !plugin.isActive()) {
+    logger.warning("'role-strategy' plugin is not installed or not active. Skipping security configuration.")
     return
 }
+import com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy
+import com.michelin.cio.hudson.plugins.rolestrategy.Role
+import hudson.security.Permission
 
 // Sicherheitsrealm setzen (Benutzer und Passwort)
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
