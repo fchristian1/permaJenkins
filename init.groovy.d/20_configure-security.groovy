@@ -1,10 +1,17 @@
 import jenkins.model.*
 import hudson.security.*
-import com.michelin.cio.hudson.plugins.rolestrategy.*
 import java.util.logging.Logger
 
 def logger = Logger.getLogger("")
 def instance = Jenkins.getInstance()
+def pluginManager = instance.getPluginManager()
+
+// Überprüfen, ob das 'role-strategy' Plugin installiert ist
+def plugin = pluginManager.getPlugin("role-strategy")
+if (plugin == null) {
+    logger.warning("'role-strategy' plugin is not installed. Skipping security configuration.")
+    return
+}
 
 // Sicherheitsrealm setzen (Benutzer und Passwort)
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
@@ -21,6 +28,8 @@ if (adminUser == null) {
 }
 
 // Rollenbasierte Berechtigungen setzen
+import com.michelin.cio.hudson.plugins.rolestrategy.*
+
 def roleBasedStrategy = new RoleBasedAuthorizationStrategy()
 instance.setAuthorizationStrategy(roleBasedStrategy)
 
