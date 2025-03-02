@@ -12,7 +12,20 @@ updateCenter.updateAllSites()
 def pluginsToInstall = ["role-strategy"]
 def installedPlugins = pluginManager.plugins.collect { it.getShortName() }
 
-def installPluginWithDependencies(pluginName, installedPlugins, logger, updateCenter) {
+def collectDependencies(pluginName, collectedDependencies, updateCenter) {
+    def pluginInfo = updateCenter.getPlugin(pluginName)
+    if (pluginInfo != null) {
+        pluginInfo.dependencies.each { dependency ->
+            def dependencyName = dependency.shortName ?: dependency.plugin?.name
+            if (dependencyName && !collectedDependencies.contains(dependencyName)) {
+                collectedDependencies.add(dependencyName)
+                collectDependencies(dependencyName, collectedDependencies, updateCenter)
+            }
+        }
+    }
+}
+
+def installPlugin(pluginName, installedPlugins, logger, updateCenter) {
     if (!installedPlugins.contains(pluginName)) {
         logger.info("Installing '${pluginName}' plugin...")
         def pluginDeployment = null
@@ -28,26 +41,18 @@ def installPluginWithDependencies(pluginName, installedPlugins, logger, updateCe
         pluginDeployment.get()
         logger.info("'${pluginName}' plugin installed.")
         installedPlugins.add(pluginName)
-
-        // Installiere Abhängigkeiten rekursiv
-        def pluginInfo = updateCenter.getPlugin(pluginName)
-        if (pluginInfo != null) {
-            pluginInfo.dependencies.each { dependency ->
-                def dependencyName = dependency.shortName ?: dependency.plugin?.name
-                if (dependencyName) {
-                    installPluginWithDependencies(dependencyName, installedPlugins, logger, updateCenter)
-                } else {
-                    logger.warning("Could not determine the name of the dependency for '${pluginName}'")
-                }
-            }
-        }
     } else {
         logger.info("'${pluginName}' plugin is already installed.")
     }
 }
 
 pluginsToInstall.each { pluginName ->
-    installPluginWithDependencies(pluginName, installedPlugins, logger, updateCenter)
+    def collectedDependencies = []
+    collectDependencies(pluginName, collectedDependencies, updateCenter)
+    collectedDependencies.reverse().each { dependencyName ->
+        installPlugin(dependencyName, installedPlugins, logger, updateCenter)
+    }
+    installPlugin(pluginName, installedPlugins, logger, updateCenter)
 }
 
 instance.save()
