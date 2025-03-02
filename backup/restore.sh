@@ -1,15 +1,34 @@
 #!/bin/bash
 
 # Speicherort des letzten Backups
-BACKUP_DIR="/backup/jenkins"
-LATEST_BACKUP=$(ls -t $BACKUP_DIR | head -n 1)
-BACKUP_FILE="$BACKUP_DIR/$LATEST_BACKUP"
+BACKUP_DIR="/backup"
+JENKINS_BACKUP_DIR="$BACKUP_DIR/jenkins"
+GRAFANA_BACKUP_DIR="$BACKUP_DIR/grafana"
+JENKINS_LATEST_BACKUP=$(ls -t $JENKINS_BACKUP_DIR | head -n 1)
+GRAFANA_LATEST_BACKUP=$(ls -t $GRAFANA_BACKUP_DIR | head -n 1)
 
-if [ -f "$BACKUP_FILE" ]; then
-    echo "Wiederherstellen aus: $BACKUP_FILE"
+JENKINS_BACKUP_FILE="$JENKINS_BACKUP_DIR/$JENKINS_LATEST_BACKUP"
+GRAFANA_BACKUP_FILE="$GRAFANA_BACKUP_DIR/$GRAFANA_LATEST_BACKUP"
+
+# Jenkins
+if [ -f "$JENKINS_BACKUP_FILE" ]; then
+    echo "Wiederherstellen aus: $JENKINS_BACKUP_FILE"
     docker stop jenkins
-    tar -xzvf "$BACKUP_FILE" -C /var/lib/docker/volumes/jenkins_home/_data
+    rm -rf /var/lib/docker/volumes/permajenkins_jenkins_home/_data/*
+    tar -xzvf "$JENKINS_BACKUP_FILE" -C /var/lib/docker/volumes/permajenkins_jenkins_home/_data
     docker start jenkins
+    echo "Wiederherstellung abgeschlossen!"
+else
+    echo "Kein Backup gefunden!"
+fi
+
+# grafana
+if [ -f "$GRAFANA_BACKUP_FILE" ]; then
+    echo "Wiederherstellen aus: $GRAFANA_BACKUP_FILE"
+    docker stop grafana
+    rm -rf /var/lib/docker/volumes/permajenkins_grafana_data/_data/*
+    tar -xzvf "$GRAFANA_BACKUP_FILE" -C /var/lib/docker/volumes/permajenkins_grafana_data/_data
+    docker start grafana
     echo "Wiederherstellung abgeschlossen!"
 else
     echo "Kein Backup gefunden!"
