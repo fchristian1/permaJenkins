@@ -21,31 +21,32 @@ if (plugin == null) {
 } else {
     logger.info("'role-strategy' plugin is already installed.")
 }
+if (plugin == null) {
+    // Sicherheitsrealm setzen (Benutzer und Passwort)
+    def hudsonRealm = new HudsonPrivateSecurityRealm(false)
+    instance.setSecurityRealm(hudsonRealm)
 
-// Sicherheitsrealm setzen (Benutzer und Passwort)
-def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-instance.setSecurityRealm(hudsonRealm)
+    // Überprüfen, ob der Admin-Benutzer bereits existiert
+    def adminUser = hudsonRealm.getUser("admin")
 
-// Überprüfen, ob der Admin-Benutzer bereits existiert
-def adminUser = hudsonRealm.getUser("admin")
+    if (adminUser == null) {
+        hudsonRealm.createAccount("admin", "admin")
+        println("Admin-Benutzer 'admin' mit Passwort 'admin' wurde erfolgreich erstellt!")
+    } else {
+        println("Admin-Benutzer 'admin' existiert bereits. Keine Änderungen vorgenommen.")
+    }
 
-if (adminUser == null) {
-    hudsonRealm.createAccount("admin", "admin")
-    println("Admin-Benutzer 'admin' mit Passwort 'admin' wurde erfolgreich erstellt!")
-} else {
-    println("Admin-Benutzer 'admin' existiert bereits. Keine Änderungen vorgenommen.")
-}
+    // Rollenbasierte Berechtigungen setzen
+    def roleBasedStrategy = new RoleBasedAuthorizationStrategy()
+    instance.setAuthorizationStrategy(roleBasedStrategy)
 
-// Rollenbasierte Berechtigungen setzen
-def roleBasedStrategy = new RoleBasedAuthorizationStrategy()
-instance.setAuthorizationStrategy(roleBasedStrategy)
+    // Admin-Rolle erstellen und Berechtigungen zuweisen
+    def permissions = new HashSet<Permission>()
+    permissions.add(Jenkins.ADMINISTER)
+    def adminRole = new Role("admin", ".*", permissions)
+    roleBasedStrategy.addRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole)
+    roleBasedStrategy.assignRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole, "admin")
 
-// Admin-Rolle erstellen und Berechtigungen zuweisen
-def permissions = new HashSet<Permission>()
-permissions.add(Jenkins.ADMINISTER)
-def adminRole = new Role("admin", ".*", permissions)
-roleBasedStrategy.addRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole)
-roleBasedStrategy.assignRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole, "admin")
-
-// Änderungen speichern
+    // Änderungen speichern
 instance.save()
+}
