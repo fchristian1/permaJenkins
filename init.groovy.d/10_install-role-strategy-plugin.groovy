@@ -17,6 +17,7 @@ def collectDependencies(pluginName, collectedDependencies, updateCenter, logger)
     def pluginInfo = updateCenter.getPlugin(pluginName)
     if (pluginInfo != null) {
         pluginInfo.dependencies.each { dependency ->
+        logger.info("Checking dependency '${dependency}'...")
             def dependencyName = dependency.plugin?.name
             if (dependencyName) {
                 if (!collectedDependencies.contains(dependencyName)) {
