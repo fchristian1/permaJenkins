@@ -13,6 +13,7 @@ def pluginsToInstall = ["role-strategy"]
 def installedPlugins = pluginManager.plugins.collect { it.getShortName() }
 
 def collectDependencies(pluginName, collectedDependencies, updateCenter) {
+    logger.info("Collecting dependencies for '${pluginName}' plugin...")
     def pluginInfo = updateCenter.getPlugin(pluginName)
     if (pluginInfo != null) {
         pluginInfo.dependencies.each { dependency ->
@@ -32,6 +33,7 @@ def collectDependencies(pluginName, collectedDependencies, updateCenter) {
 }
 
 def installPlugin(pluginName, installedPlugins, logger, updateCenter) {
+    logger.info("Checking if '${pluginName}' plugin is installed...")
     if (!installedPlugins.contains(pluginName)) {
         logger.info("Installing '${pluginName}' plugin...")
         def pluginDeployment = null
