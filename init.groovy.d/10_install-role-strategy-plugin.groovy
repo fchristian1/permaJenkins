@@ -12,7 +12,7 @@ updateCenter.updateAllSites()
 def pluginsToInstall = ["role-strategy"]
 def installedPlugins = pluginManager.plugins.collect { it.getShortName() }
 
-def collectDependencies(pluginName, collectedDependencies, updateCenter) {
+def collectDependencies(pluginName, collectedDependencies, updateCenter, logger) {
     logger.info("Collecting dependencies for '${pluginName}' plugin...")
     def pluginInfo = updateCenter.getPlugin(pluginName)
     if (pluginInfo != null) {
@@ -21,7 +21,7 @@ def collectDependencies(pluginName, collectedDependencies, updateCenter) {
             if (dependencyName) {
                 if (!collectedDependencies.contains(dependencyName)) {
                     collectedDependencies.add(dependencyName)
-                    collectDependencies(dependencyName, collectedDependencies, updateCenter)
+                    collectDependencies(dependencyName, collectedDependencies, updateCenter, logger)
                 }
             } else {
                 logger.warning("Could not determine the name of the dependency for '${pluginName}'")
@@ -56,7 +56,7 @@ def installPlugin(pluginName, installedPlugins, logger, updateCenter) {
 
 pluginsToInstall.each { pluginName ->
     def collectedDependencies = []
-    collectDependencies(pluginName, collectedDependencies, updateCenter)
+    collectDependencies(pluginName, collectedDependencies, updateCenter, logger)
     collectedDependencies.reverse().each { dependencyName ->
         installPlugin(dependencyName, installedPlugins, logger, updateCenter)
     }
