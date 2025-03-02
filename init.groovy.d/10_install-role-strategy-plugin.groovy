@@ -26,6 +26,8 @@ def collectDependencies(pluginName, collectedDependencies, updateCenter) {
                 logger.warning("Could not determine the name of the dependency for '${pluginName}'")
             }
         }
+    } else {
+        logger.warning("Could not find plugin info for '${pluginName}'")
     }
 }
 
