@@ -11,7 +11,7 @@ if [ "$confirm" != "ja" ]; then
 fi
 
 echo "🛑 Stoppe Jenkins-Container..."
-docker-compose down
+docker compose down
 
 echo "🗑️ Lösche das Docker-Volume '$VOLUME_NAME'..."
 docker volume rm $VOLUME_NAME
@@ -22,7 +22,7 @@ read -p "Möchtest du Jenkins neu starten? (ja/nein): " restart
 
 if [ "$restart" == "ja" ]; then
     echo "🚀 Starte Jenkins neu..."
-    docker-compose up -d
+    docker compose up -d
     echo "🎉 Jenkins läuft wieder mit einem frischen Volume!"
 else
     echo "👌 Kein Neustart durchgeführt. Jenkins bleibt gestoppt."
