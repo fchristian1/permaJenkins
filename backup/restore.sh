@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# prüfen ob das Script mit sudo ausgeführt wird
+if [ "$EUID" -ne 0 ]; then
+    echo "Bitte führe das Script mit sudo-Rechten aus"
+    exit 1
+fi
+
 # Speicherort des letzten Backups
 BACKUP_DIR="/backup"
 JENKINS_BACKUP_DIR="$BACKUP_DIR/jenkins"
