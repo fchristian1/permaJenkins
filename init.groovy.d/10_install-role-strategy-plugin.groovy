@@ -9,10 +9,10 @@ def updateCenter = instance.getUpdateCenter()
 // Warten, bis das Update Center vollständig initialisiert ist
 updateCenter.updateAllSites()
 
-def pluginsToInstall = ["caffeine-api", "commons-lang3-api", "ionicons-api", "role-strategy"]
+def pluginsToInstall = ["role-strategy"]
 def installedPlugins = pluginManager.plugins.collect { it.getShortName() }
 
-pluginsToInstall.each { pluginName ->
+def installPluginWithDependencies(pluginName) {
     if (!installedPlugins.contains(pluginName)) {
         logger.info("Installing '${pluginName}' plugin...")
         def pluginDeployment = null
@@ -27,9 +27,22 @@ pluginsToInstall.each { pluginName ->
         }
         pluginDeployment.get()
         logger.info("'${pluginName}' plugin installed.")
+        installedPlugins.add(pluginName)
+
+        // Installiere Abhängigkeiten rekursiv
+        def pluginInfo = updateCenter.getPlugin(pluginName)
+        if (pluginInfo != null) {
+            pluginInfo.dependencies.each { dependency ->
+                installPluginWithDependencies(dependency.shortName)
+            }
+        }
     } else {
         logger.info("'${pluginName}' plugin is already installed.")
     }
+}
+
+pluginsToInstall.each { pluginName ->
+    installPluginWithDependencies(pluginName)
 }
 
 instance.save()
