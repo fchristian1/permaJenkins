@@ -17,9 +17,13 @@ def collectDependencies(pluginName, collectedDependencies, updateCenter) {
     if (pluginInfo != null) {
         pluginInfo.dependencies.each { dependency ->
             def dependencyName = dependency.shortName ?: dependency.plugin?.name
-            if (dependencyName && !collectedDependencies.contains(dependencyName)) {
-                collectedDependencies.add(dependencyName)
-                collectDependencies(dependencyName, collectedDependencies, updateCenter)
+            if (dependencyName) {
+                if (!collectedDependencies.contains(dependencyName)) {
+                    collectedDependencies.add(dependencyName)
+                    collectDependencies(dependencyName, collectedDependencies, updateCenter)
+                }
+            } else {
+                logger.warning("Could not determine the name of the dependency for '${pluginName}'")
             }
         }
     }
