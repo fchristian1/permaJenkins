@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 15s  # Wie oft Prometheus Daten sammelt (Standard: 15s)
+  evaluation_interval: 15s  # Wie oft Regeln ausgewertet werden
+
+scrape_configs:
+  - job_name: 'jenkins'
+    metrics_path: '/prometheus'  # Der Endpunkt, von dem Prometheus die Metriken holt
+    static_configs:
+      - targets: ['localhost:18080']

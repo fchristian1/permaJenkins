@@ -18,9 +18,18 @@ services:
         container_name: grafana
         restart: always
         ports:
-            - "28080:3000"
+            - "13000:3000"
         volumes:
             - grafana_data:/var/lib/grafana
+    prometheus:
+        image: prom/prometheus
+        container_name: prometheus
+        restart: always
+        ports:
+            - "19090:9090"
+        volumes:
+            - ./prometheus.yml:/etc/prometheus/prometheus.yml
+            - ./prometheus_data:/prometheus
 volumes:
     jenkins_home:
         driver: local
