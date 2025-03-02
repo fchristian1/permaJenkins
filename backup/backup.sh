@@ -16,7 +16,7 @@ mkdir -p "$GRAFANA_BACKUP_DIR"
 docker stop jenkins
 docker stop grafana
 tar -czvf "$JENKINS_BACKUP_FILE" -C /var/lib/docker/volumes/permajenkins_jenkins_home/_data .
-tar -czvf "$JENKINS_BACKUP_FILE" -C /var/lib/docker/volumes/permajenkins_grafana/_data .
+tar -czvf "$JENKINS_BACKUP_FILE" -C /var/lib/docker/volumes/permajenkins_grafana_data/_data .
 docker start jenkins
 docker start grafana
 
