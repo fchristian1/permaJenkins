@@ -1,4 +1,11 @@
 #!/bin/bash
+# check sudo für dieses script benötigt
+
+# Prüfen, ob das Script mit sudo ausgeführt wird
+if [ "$EUID" -ne 0 ]; then
+    echo "Bitte führe das Script mit sudo-Rechten aus!"
+    exit 1
+fi
 
 # Speicherort für das Backup
 BACKUP_DIR="/backup"
