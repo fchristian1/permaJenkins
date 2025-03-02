@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Speicherort des letzten Backups
-BACKUP_DIR="../backup/jenkins"
+BACKUP_DIR="/backup/jenkins"
 LATEST_BACKUP=$(ls -t $BACKUP_DIR | head -n 1)
 BACKUP_FILE="$BACKUP_DIR/$LATEST_BACKUP"
 

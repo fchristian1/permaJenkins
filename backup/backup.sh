@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Speicherort für das Backup
-BACKUP_DIR="../backup/jenkins"
+BACKUP_DIR="/backup/jenkins"
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 BACKUP_FILE="$BACKUP_DIR/jenkins_backup_$TIMESTAMP.tar.gz"
 
