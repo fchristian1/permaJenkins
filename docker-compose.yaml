@@ -25,6 +25,7 @@ services:
         image: prom/prometheus
         container_name: prometheus
         restart: always
+        user: root
         ports:
             - "19090:9090"
         volumes:
