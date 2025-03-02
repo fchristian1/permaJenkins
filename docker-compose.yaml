@@ -36,3 +36,5 @@ volumes:
         driver: local
     grafana_data:
         driver: local
+    prometheus_data:
+        driver: local
