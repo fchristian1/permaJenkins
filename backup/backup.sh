@@ -10,7 +10,7 @@ mkdir -p "$BACKUP_DIR"
 
 # Jenkins-Daten sichern
 docker stop jenkins
-tar -czvf "$BACKUP_FILE" -C /var/lib/docker/volumes/jenkins_home/_data .
+tar -czvf "$BACKUP_FILE" -C /var/lib/docker/volumes/permajenkins_jenkins_home/_data .
 docker start jenkins
 
 # Alte Backups löschen (älter als 7 Tage)
