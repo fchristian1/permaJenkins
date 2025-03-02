@@ -1,8 +1,9 @@
 #!/bin/bash
 
-VOLUME_NAME="jenkins_home"
+JENKINS_VOLUME_NAME="permajenkins_jenkins_home"
+GRAFANA_VOLUME_NAME="permajenkins_grafana_data"
 
-echo "📢 Achtung! Das gesamte Jenkins-Volume ($VOLUME_NAME) wird gelöscht!"
+echo "📢 Achtung! Alle Jenkins/Grafana-Volumes ($JENKINS_VOLUME_NAME, $GRAFANA_VOLUME_NAME) wird gelöscht!"
 read -p "Bist du sicher? (ja/nein): " confirm
 
 if [ "$confirm" != "ja" ]; then
@@ -10,20 +11,20 @@ if [ "$confirm" != "ja" ]; then
     exit 1
 fi
 
-echo "🛑 Stoppe Jenkins-Container..."
+echo "🛑 Stoppe Jenkins/Grafana/Prometheus-Container..."
 docker compose down
 
-echo "🗑️ Lösche das Docker-Volume '$VOLUME_NAME'..."
-docker volume rm $VOLUME_NAME
+echo "🗑️ Lösche die Docker-Volumes '$JENKINS_VOLUME_NAME, $GRAFANA_VOLUME_NAME'..."
+docker volume rm $JENKINS_VOLUME_NAME $GRAFANA_VOLUME_NAME
 
-echo "✅ Volume gelöscht! Jenkins kann nun frisch gestartet werden."
+echo "✅ Volumes gelöscht! Jenkins/Grafana/Prometheus kann nun frisch gestartet werden."
 
-read -p "Möchtest du Jenkins neu starten? (ja/nein): " restart
+read -p "Möchtest du Jenkins/Grafana/Prometheus neu starten? (ja/nein): " restart
 
 if [ "$restart" == "ja" ]; then
-    echo "🚀 Starte Jenkins neu..."
+    echo "🚀 Starte Jenkins/Grafana/Prometheus neu..."
     docker compose up -d
-    echo "🎉 Jenkins läuft wieder mit einem frischen Volume!"
+    echo "🎉 Jenkins/Grafana/Prometheus läuft wieder mit einem frischen Volume!"
 else
-    echo "👌 Kein Neustart durchgeführt. Jenkins bleibt gestoppt."
+    echo "👌 Kein Neustart durchgeführt. Jenkins/Grafana/Prometheus bleibt gestoppt."
 fi
