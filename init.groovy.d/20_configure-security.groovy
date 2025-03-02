@@ -12,6 +12,14 @@ if (plugin == null || !plugin.isActive()) {
     logger.warning("'role-strategy' plugin is not installed or not active. Skipping security configuration.")
     return
 }
+sleep(10000) // 10 Sekunden warten
+import com.michelin.cio.hudson.plugins.rolestrategy.AuthorizationType
+import com.michelin.cio.hudson.plugins.rolestrategy.PermissionEntry
+import com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy
+import com.michelin.cio.hudson.plugins.rolestrategy.Role
+import com.synopsys.arc.jenkins.plugins.rolestrategy.RoleType
+import hudson.security.Permission
+import jenkins.model.Jenkins
 
 // Sicherheitsrealm setzen (Benutzer und Passwort)
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
