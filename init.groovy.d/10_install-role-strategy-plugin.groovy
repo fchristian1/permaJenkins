@@ -6,11 +6,22 @@ def instance = Jenkins.getInstance()
 def pluginManager = instance.getPluginManager()
 def updateCenter = instance.getUpdateCenter()
 
-// Überprüfen, ob das 'role-strategy' Plugin installiert ist
+// Warten, bis das Update Center vollständig initialisiert ist
+updateCenter.updateAllSites()
+
 def plugin = pluginManager.getPlugin("role-strategy")
 if (plugin == null) {
     logger.info("Installing 'role-strategy' plugin...")
-    def pluginDeployment = updateCenter.getPlugin("role-strategy").deploy()
+    def pluginDeployment = null
+    while (pluginDeployment == null) {
+        def pluginInfo = updateCenter.getPlugin("role-strategy")
+        if (pluginInfo != null) {
+            pluginDeployment = pluginInfo.deploy()
+        } else {
+            logger.info("Waiting for 'role-strategy' plugin to become available...")
+            sleep(10000) // 10 Sekunden warten
+        }
+    }
     pluginDeployment.get()
     logger.info("'role-strategy' plugin installed.")
     instance.save()
