@@ -8,17 +8,25 @@ import jenkins.install.*
 // Jenkins-Instanz abrufen
 def instance = Jenkins.getInstance()
 
-// Sicherheitsrealm setzen (Benutzer und Passwort)
-def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-hudsonRealm.createAccount("admin", "admin")
-instance.setSecurityRealm(hudsonRealm)
+// Überprüfen, ob der Admin-Benutzer bereits existiert
+def hudsonRealm = instance.getSecurityRealm()
+def adminUser = hudsonRealm.getUser("admin")
 
-// Berechtigungen setzen
-def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
-strategy.setAllowAnonymousRead(false)
-instance.setAuthorizationStrategy(strategy)
+if (adminUser == null) {
+    // Sicherheitsrealm setzen (Benutzer und Passwort)
+    hudsonRealm = new HudsonPrivateSecurityRealm(false)
+    hudsonRealm.createAccount("admin", "admin")
+    instance.setSecurityRealm(hudsonRealm)
 
-// Änderungen speichern
-instance.save()
+    // Berechtigungen setzen
+    def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
+    strategy.setAllowAnonymousRead(false)
+    instance.setAuthorizationStrategy(strategy)
 
-println("Admin-User 'admin' mit Passwort 'admin' wurde erfolgreich erstellt!")
+    // Änderungen speichern
+    instance.save()
+
+    println("Admin-User 'admin' mit Passwort 'admin' wurde erfolgreich erstellt!")
+} else {
+    println("Admin-User 'admin' existiert bereits. Keine Änderungen vorgenommen.")
+}
