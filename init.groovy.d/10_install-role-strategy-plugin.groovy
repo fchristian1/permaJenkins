@@ -12,7 +12,7 @@ updateCenter.updateAllSites()
 def pluginsToInstall = ["role-strategy"]
 def installedPlugins = pluginManager.plugins.collect { it.getShortName() }
 
-def installPluginWithDependencies(pluginName, installedPlugins, logger) {
+def installPluginWithDependencies(pluginName, installedPlugins, logger, updateCenter) {
     if (!installedPlugins.contains(pluginName)) {
         logger.info("Installing '${pluginName}' plugin...")
         def pluginDeployment = null
@@ -42,7 +42,7 @@ def installPluginWithDependencies(pluginName, installedPlugins, logger) {
 }
 
 pluginsToInstall.each { pluginName ->
-    installPluginWithDependencies(pluginName, installedPlugins, logger)
+    installPluginWithDependencies(pluginName, installedPlugins, logger, updateCenter)
 }
 
 instance.save()
