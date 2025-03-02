@@ -23,10 +23,14 @@ if (adminUser == null) {
     strategy.setAllowAnonymousRead(false)
     instance.setAuthorizationStrategy(strategy)
 
+    // Sicherheitsrollen auf "Legacy" setzen
+    def legacyStrategy = new LegacyAuthorizationStrategy()
+    instance.setAuthorizationStrategy(legacyStrategy)
+
     // Änderungen speichern
     instance.save()
 
-    println("Admin-User 'admin' mit Passwort 'admin' wurde erfolgreich erstellt!")
+    println("Admin-User 'admin' mit Passwort 'admin' wurde erfolgreich erstellt und Sicherheitsrollen auf 'Legacy' gesetzt!")
 } else {
     println("Admin-User 'admin' existiert bereits. Keine Änderungen vorgenommen.")
 }
