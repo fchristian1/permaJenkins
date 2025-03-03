@@ -20,7 +20,7 @@ function connect() {
                 headers: data.headers,
                 body: data.body
             })
-                .then(response => response.json())
+                .then(response => response.text())
                 .then(data => {
                     console.log('Success:', data);
                 })
