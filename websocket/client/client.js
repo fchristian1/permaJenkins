@@ -15,7 +15,7 @@ function connect() {
         if (data !== 'something') {
             //data is a completet express request object
             //send it to the server
-            fetch('http://192.168.177.10:28080/githubtrigger', {
+            fetch('http://192.168.178.10:18080/jenkins/github-webhook/', {
                 method: data.method,
                 headers: data.headers,
                 body: data.body
