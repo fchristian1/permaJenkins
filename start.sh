@@ -13,13 +13,16 @@ if ! command -v docker compose &>/dev/null; then
     docker_install=1
 fi
 
-if [ $docker_install -eq 1 ]; then
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+if [ "$docker_install" -eq 1 ]; then
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
-    sudo usermod -aG docker $USER
+    sudo usermod -aG docker "$USER"
+
+    # Automatisch als neuer Benutzer mit Docker-Berechtigung ausführen
+    sudo -u "$USER" bash -c 'docker compose up -d'
 fi
 
-newgrp docker <<EONG
+if [ "$docker_install" -eq 0 ]; then
     docker compose up -d
-EONG
+fi
