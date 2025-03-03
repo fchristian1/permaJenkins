@@ -12,7 +12,7 @@ function connect() {
     });
     ws.on('message', function message(data) {
         console.log('recived');
-        fetch('http://localhost:18080/githubtrigger', {
+        fetch('http://192.168.178.10:18080/githubtrigger', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
