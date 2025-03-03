@@ -1,7 +1,6 @@
 import { createServer } from 'http';
 import express from 'express';
 import { WebSocketServer } from "ws";
-import { type } from 'os';
 
 const server = createServer();
 const app = express();
@@ -13,7 +12,7 @@ app.all('/githubtrigger', (req, res) => {
     console.log('githubTrigger: ' + Date.now());
     const data = {
         type: 'githubTrigger',
-        payload: JSON.stringify(req.body),
+        payload: req.body,
     }
     wss.clients.forEach((client) => {
         client.send(JSON.stringify(data));
