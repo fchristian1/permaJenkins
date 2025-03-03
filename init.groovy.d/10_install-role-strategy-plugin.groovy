@@ -20,7 +20,9 @@ def collectDependencies(pluginName, collectedDependencies, updateCenter, logger)
         pluginInfo.dependencies.each { dependency ->
             logger.info("Checking dependency '${dependency}, ${dependency.properties}'...")
             def dependencyName = null
-            if (dependency.hasProperty('shortName')) {
+            if (dependency.hasProperty('key')) {
+                dependencyName = dependency.key
+            } else if (dependency.hasProperty('shortName')) {
                 dependencyName = dependency.shortName
             } else if (dependency.plugin?.hasProperty('name')) {
                 dependencyName = dependency.plugin.name
