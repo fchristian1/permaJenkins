@@ -10,13 +10,11 @@ server.on('request', app);
 
 app.use(express.json());
 app.all('/githubtrigger', (req, res) => {
-    console.log('githubTrigger' + Date.now());
-    console.log(req.body);
+    console.log('githubTrigger: ' + Date.now());
     const data = {
         type: 'githubTrigger',
         payload: req
     }
-    console.log(JSON.stringify(data));
     wss.clients.forEach((client) => {
         client.send(JSON.stringify(data));
     });
