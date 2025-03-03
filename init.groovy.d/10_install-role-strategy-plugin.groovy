@@ -45,7 +45,7 @@ def collectDependencies(pluginName, collectedDependencies, updateCenter, logger)
     }
 }
 
-def installPlugin(pluginName, installedPlugins, logger, updateCenter) {
+def installPlugin(pluginName, installedPlugins, logger, updateCenter, newPluginsInstalled) {
     logger.info("Checking if '${pluginName}' plugin is installed...")
     newPluginsInstalled = true
     if (!installedPlugins.contains(pluginName)) {
@@ -72,9 +72,9 @@ pluginsToInstall.each { pluginName ->
     def collectedDependencies = []
     collectDependencies(pluginName, collectedDependencies, updateCenter, logger)
     collectedDependencies.reverse().each { dependencyName ->
-        installPlugin(dependencyName, installedPlugins, logger, updateCenter)
+        installPlugin(dependencyName, installedPlugins, logger, updateCenter, newPluginsInstalled)
     }
-    installPlugin(pluginName, installedPlugins, logger, updateCenter)
+    installPlugin(pluginName, installedPlugins, logger, updateCenter, newPluginsInstalled)
 }
 
 // Neustart nur, wenn neue Plugins installiert wurden
