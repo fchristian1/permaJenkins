@@ -11,7 +11,7 @@ function connect() {
         ws.send('something');
     });
     ws.on('message', function message(data) {
-        console.log('received');
+        console.log('received', JSON.stringify(data));
         try {
             JSON.parse(data);
         }
