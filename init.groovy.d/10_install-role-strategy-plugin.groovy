@@ -9,7 +9,7 @@ def updateCenter = instance.getUpdateCenter()
 // Warten, bis das Update Center vollständig initialisiert ist
 updateCenter.updateAllSites()
 
-def pluginsToInstall = ["role-strategy", "prometheus", "pipeline-stage-view"]
+def pluginsToInstall = ["role-strategy", "prometheus", "pipeline-stage-view", "workflow-aggregator"]
 def installedPlugins = pluginManager.plugins.collect { it.getShortName() }
 def newPluginsInstalled = [false]
 
