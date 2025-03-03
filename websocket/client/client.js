@@ -2,7 +2,7 @@ import WebSocket from "ws";
 
 const ws = connect();
 
-// intervall function to connect to the server
+// Intervallfunktion zum Verbinden mit dem Server
 function connect() {
     const ws = new WebSocket('ws://85.209.49.32:28080');
     ws.on('error', console.error);
@@ -11,14 +11,21 @@ function connect() {
         ws.send('something');
     });
     ws.on('message', function message(data) {
-        console.log('recived: ' + data);
+        console.log('received: ' + data);
         if (data != 'something') {
+            let parsedData;
+            try {
+                parsedData = JSON.parse(data);
+            } catch (e) {
+                console.error('Error parsing data:', e);
+                return;
+            }
             fetch('http://192.168.178.10:18080/githubtrigger', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data.payload),
+                body: JSON.stringify(parsedData.payload),
             })
                 .then(response => response.json())
                 .then(data => {
