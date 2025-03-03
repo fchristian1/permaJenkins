@@ -22,7 +22,9 @@ def collectDependencies(pluginName, collectedDependencies, updateCenter, logger)
             if (dependency.hasProperty('shortName')) {
                 dependencyName = dependency.shortName
             } else if (dependency.plugin?.hasProperty('name')) {
-                dependencyName = dependency.plugin?.name
+                dependencyName = dependency.plugin.name
+            } else {
+                logger.warning("Dependency '${dependency.properties}' does not have 'shortName' or 'plugin.name' properties.")
             }
             if (dependencyName) {
                 logger.info("Found dependency '${dependencyName}' for '${pluginName}' plugin.")
