@@ -25,7 +25,7 @@ function connect() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-
+                body: JSON.stringify(parsedData.payload),
             })
                 .then(response => response.text())
                 .then(data => {
