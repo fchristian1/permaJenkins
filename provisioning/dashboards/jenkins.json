@@ -597,7 +597,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^__name__$/",
+          "fields": "",
           "values": false
         },
         "showPercentChange": false,
@@ -611,10 +611,13 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
+          "exemplar": false,
           "expr": "vm_uptime_milliseconds",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 1,
+          "range": true,
           "refId": "A",
           "textEditor": false
         }
