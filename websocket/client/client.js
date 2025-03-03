@@ -11,7 +11,21 @@ function connect() {
         ws.send('something');
     });
     ws.on('message', function message(data) {
-        console.log('recived: %s', data);
+        console.log('recived');
+        fetch('http://localhost:18080/githubtrigger', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: data,
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     });
     ws.on('close', function close() {
         console.log('disconnected: ' + Date.now());
