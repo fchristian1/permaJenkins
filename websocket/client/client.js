@@ -4,7 +4,7 @@ const ws = connect();
 
 // intervall function to connect to the server
 function connect() {
-    const ws = new WebSocket('ws://localhost:28080');
+    const ws = new WebSocket('ws://85.209.49.32:28080');
     ws.on('error', console.error);
     ws.on('open', function open() {
         console.log('connected');
