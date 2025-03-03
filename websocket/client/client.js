@@ -12,8 +12,9 @@ function connect() {
     });
     ws.on('message', function message(data) {
         console.log('received: %s', data);
+
         try {
-            JSON.parse(data);
+            JSON.parse(data.toString());
         }
         catch (e) {
             return;
