@@ -11,8 +11,15 @@ function connect() {
         ws.send('something');
     });
     ws.on('message', function message(data) {
-        console.log('received: ' + data);
-        if (data != 'something') {
+        console.log('received');
+        try {
+            JSON.parse(data);
+        }
+        catch (e) {
+            return;
+        }
+        if (JSON.parse(data).type != 'githubTrigger') {
+            console.log('githubTrigger', Date.now());
             //data is a completet express request object
             //send it to the server
             fetch('http://192.168.178.10:18080/jenkins/github-webhook/', {
