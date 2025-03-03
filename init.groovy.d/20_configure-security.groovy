@@ -24,6 +24,9 @@ import jenkins.model.Jenkins
 
 // Sicherheitsrealm setzen (Benutzer und Passwort)
 Jenkins jenkins = Jenkins.get()
+def hudsonRealm = new HudsonPrivateSecurityRealm(false)
+instance.setSecurityRealm(hudsonRealm)
+
 def rbas = new RoleBasedAuthorizationStrategy()
 
 // Überprüfen, ob der Admin-Benutzer bereits existiert
