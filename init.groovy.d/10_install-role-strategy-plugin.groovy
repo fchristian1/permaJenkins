@@ -11,6 +11,7 @@ updateCenter.updateAllSites()
 
 def pluginsToInstall = ["role-strategy"]
 def installedPlugins = pluginManager.plugins.collect { it.getShortName() }
+def newPluginsInstalled = false
 
 def collectDependencies(pluginName, collectedDependencies, updateCenter, logger) {
     logger.info("Collecting dependencies for '${pluginName}' plugin...")
@@ -61,6 +62,7 @@ def installPlugin(pluginName, installedPlugins, logger, updateCenter) {
         pluginDeployment.get()
         logger.info("'${pluginName}' plugin installed.")
         installedPlugins.add(pluginName)
+        newPluginsInstalled = true
     } else {
         logger.info("'${pluginName}' plugin is already installed.")
     }
@@ -75,5 +77,10 @@ pluginsToInstall.each { pluginName ->
     installPlugin(pluginName, installedPlugins, logger, updateCenter)
 }
 
-instance.save()
-instance.restart()
+// Neustart nur, wenn neue Plugins installiert wurden
+if (newPluginsInstalled) {
+    instance.save()
+    instance.restart()
+} else {
+    logger.info("No new plugins were installed. No restart required.")
+}
