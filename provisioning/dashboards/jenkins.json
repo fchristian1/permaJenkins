@@ -358,9 +358,10 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "(vm_memory_total_committed - vm_memory_total_used) / vm_memory_total_committed * 100.0",
+          "expr": "(vm_memory_heap_committed / vm_memory_heap_max) * 100",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A",
           "textEditor": false
@@ -394,14 +395,6 @@
               {
                 "color": "#299c46",
                 "value": null
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 0
-              },
-              {
-                "color": "#1F60C4",
-                "value": 0
               }
             ]
           },
@@ -428,6 +421,7 @@
             "lastNotNull"
           ],
           "fields": "",
+          "limit": 1,
           "values": false
         },
         "showPercentChange": false,
@@ -441,9 +435,11 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "vm_memory_total_used",
+          "editorMode": "code",
+          "expr": "vm_memory_total_committed",
           "format": "time_series",
           "intervalFactor": 1,
+          "range": true,
           "refId": "A"
         }
       ],
