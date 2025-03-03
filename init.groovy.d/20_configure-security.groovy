@@ -43,8 +43,8 @@ instance.setAuthorizationStrategy(roleBasedStrategy)
 def permissions = new HashSet<Permission>()
 permissions.add(Jenkins.ADMINISTER)
 def adminRole = new Role("admin", ".*", permissions)
-roleBasedStrategy.doAddRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole)
-roleBasedStrategy.doAssignRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole, "admin")
+roleBasedStrategy.addRole(RoleType.Global, adminRole)
+roleBasedStrategy.assignRole(RoleType.Global, adminRole, "admin")
 
 // Änderungen speichern
 instance.save()
