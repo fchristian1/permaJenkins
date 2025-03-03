@@ -13,7 +13,7 @@ app.all('/githubtrigger', (req, res) => {
     console.log('githubTrigger: ' + Date.now());
     const data = {
         type: 'githubTrigger',
-        payload: req
+        payload: req.body
     }
     wss.clients.forEach((client) => {
         client.send(JSON.stringify(data));

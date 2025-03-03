@@ -16,9 +16,11 @@ function connect() {
             //data is a completet express request object
             //send it to the server
             fetch('http://192.168.178.10:18080/jenkins/github-webhook/', {
-                method: data.payload?.method,
-                headers: data.payload?.headers,
-                body: data.payload?.body
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.parse(data.payload),
             })
                 .then(response => response.text())
                 .then(data => {
