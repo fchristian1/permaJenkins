@@ -13,31 +13,20 @@ function connect() {
     ws.on('message', function message(data) {
         console.log('received: ' + data);
         if (data !== 'something') {
-            let parsedData;
-            try {
-                parsedData = JSON.parse(data);
-            } catch (e) {
-                console.error('Error parsing data:', e);
-                return;
-            }
-            if (parsedData && parsedData.payload) {
-                fetch('http://192.168.178.10:18080/githubtrigger', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(parsedData.payload),
+            //data is a completet express request object
+            //send it to the server
+            fetch('http://192.168.177.10:28080/githubtrigger', {
+                method: data.method,
+                headers: data.headers,
+                body: data.body
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
                 })
-                    .then(response => response.text())
-                    .then(data => {
-                        console.log('Success:', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            } else {
-                console.error('Invalid data format:', parsedData);
-            }
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         }
     });
     ws.on('close', function close() {
