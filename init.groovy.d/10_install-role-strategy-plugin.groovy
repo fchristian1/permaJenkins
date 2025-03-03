@@ -47,6 +47,7 @@ def collectDependencies(pluginName, collectedDependencies, updateCenter, logger)
 
 def installPlugin(pluginName, installedPlugins, logger, updateCenter) {
     logger.info("Checking if '${pluginName}' plugin is installed...")
+    newPluginsInstalled = true
     if (!installedPlugins.contains(pluginName)) {
         logger.info("Installing '${pluginName}' plugin...")
         def pluginDeployment = null
@@ -62,7 +63,6 @@ def installPlugin(pluginName, installedPlugins, logger, updateCenter) {
         pluginDeployment.get()
         logger.info("'${pluginName}' plugin installed.")
         installedPlugins.add(pluginName)
-        newPluginsInstalled = true
     } else {
         logger.info("'${pluginName}' plugin is already installed.")
     }
