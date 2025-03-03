@@ -1,9 +1,9 @@
 services:
-    serverwebsocketgithubtrigger:
+    clientwebsocketgithubtrigger:
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: serverWebsocketGithubTrigger
+        container_name: clientWebsocketGithubTrigger
         restart: always
         ports:
-            - "28080:8080"
+            - "28081:8080"
