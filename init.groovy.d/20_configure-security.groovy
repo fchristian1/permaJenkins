@@ -1,6 +1,7 @@
 import jenkins.model.*
 import hudson.security.*
 import java.util.logging.Logger
+import java.lang.reflect.Method
 
 def logger = Logger.getLogger("")
 def instance = Jenkins.getInstance()
@@ -22,8 +23,8 @@ import hudson.security.Permission
 import jenkins.model.Jenkins
 
 // Sicherheitsrealm setzen (Benutzer und Passwort)
-def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-instance.setSecurityRealm(hudsonRealm)
+Jenkins jenkins = Jenkins.get()
+def rbas = new RoleBasedAuthorizationStrategy()
 
 // Überprüfen, ob der Admin-Benutzer bereits existiert
 def adminUser = hudsonRealm.getUser("admin")
@@ -35,16 +36,16 @@ if (adminUser == null) {
     println("Admin-Benutzer 'admin' existiert bereits. Keine Änderungen vorgenommen.")
 }
 
-// Rollenbasierte Berechtigungen setzen
-def roleBasedStrategy = new RoleBasedAuthorizationStrategy()
-instance.setAuthorizationStrategy(roleBasedStrategy)
-
-// Admin-Rolle erstellen und Berechtigungen zuweisen
-def permissions = new HashSet<Permission>()
+Set<Permission> permissions = new HashSet<>();
 permissions.add(Jenkins.ADMINISTER)
-def adminRole = new Role("admin", ".*", permissions)
-roleBasedStrategy.addRole(RoleType.Global, adminRole)
-roleBasedStrategy.assignRole(RoleType.Global, adminRole, "admin")
+Role adminRole = new Role("admin", permissions)
 
-// Änderungen speichern
-instance.save()
+globalRoleMap = rbas.getRoleMap(RoleType.Global)
+globalRoleMap.addRole(adminRole)
+/* assign admin role to user 'admin' */
+globalRoleMap.assignRole(adminRole, new PermissionEntry(AuthorizationType.USER, 'admin'))
+/* assign admin role to group 'administrators' */
+globalRoleMap.assignRole(adminRole, new PermissionEntry(AuthorizationType.GROUP, 'administrators'))
+jenkins.setAuthorizationStrategy(rbas)
+
+jenkins.save()
