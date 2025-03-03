@@ -18,7 +18,7 @@ def collectDependencies(pluginName, collectedDependencies, updateCenter, logger)
     if (pluginInfo != null && pluginInfo.dependencies != null && pluginInfo.dependencies.size() > 0) {
         logger.info("Found dependencies for '${pluginName}' plugin. ${pluginInfo.dependencies.size()} dependencies found: ${pluginInfo.dependencies}")
         pluginInfo.dependencies.each { dependency ->
-            logger.info("Checking dependency '${dependency}'...")
+            logger.info("Checking dependency '${dependency}, ${dependency.properties}'...")
             def dependencyName = null
             if (dependency.hasProperty('shortName')) {
                 dependencyName = dependency.shortName
