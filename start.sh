@@ -16,7 +16,7 @@ fi
 if [ $docker_install -eq 1 ]; then
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     curl -fsSL https://get.docker.com -o get-docker.sh
-    sudo sh get-docker.sh --dry-run
+    sudo sh get-docker.sh
 fi
 
 docker compose up -d
