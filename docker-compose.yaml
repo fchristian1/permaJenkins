@@ -38,3 +38,7 @@ volumes:
         driver: local
     prometheus_data:
         driver: local
+networks:
+    default:
+        external:
+            name: jenkins
