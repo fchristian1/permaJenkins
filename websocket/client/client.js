@@ -11,7 +11,7 @@ function connect() {
         ws.send('something');
     });
     ws.on('message', function message(data) {
-        console.log('received: ' + data);
+        console.log('received: ');
         if (data != 'something') {
             let parsedData;
             try {
