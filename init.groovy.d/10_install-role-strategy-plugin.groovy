@@ -15,7 +15,7 @@ def installedPlugins = pluginManager.plugins.collect { it.getShortName() }
 def collectDependencies(pluginName, collectedDependencies, updateCenter, logger) {
     logger.info("Collecting dependencies for '${pluginName}' plugin...")
     def pluginInfo = updateCenter.getPlugin(pluginName)
-    if (pluginInfo != null) {
+    if (pluginInfo != null && pluginInfo.dependencies != null && pluginInfo.dependencies.size() > 0) {
         pluginInfo.dependencies.each { dependency ->
             logger.info("Checking dependency '${dependency}'...")
             def dependencyName = null
