@@ -16,7 +16,7 @@ app.all('/githubtrigger', (req, res) => {
         payload: JSON.stringify(req.body),
     }
     wss.clients.forEach((client) => {
-        client.send(data);
+        client.send(JSON.stringify(data));
     });
     res.send('githubTrigger');
 });
