@@ -36,8 +36,6 @@ if (adminUser == null) {
 }
 
 // Rollenbasierte Berechtigungen setzen
-import com.michelin.cio.hudson.plugins.rolestrategy.*
-
 def roleBasedStrategy = new RoleBasedAuthorizationStrategy()
 instance.setAuthorizationStrategy(roleBasedStrategy)
 
@@ -45,8 +43,8 @@ instance.setAuthorizationStrategy(roleBasedStrategy)
 def permissions = new HashSet<Permission>()
 permissions.add(Jenkins.ADMINISTER)
 def adminRole = new Role("admin", ".*", permissions)
-roleBasedStrategy.addRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole)
-roleBasedStrategy.assignRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole, "admin")
+roleBasedStrategy.doAddRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole)
+roleBasedStrategy.doAssignRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole, "admin")
 
 // Änderungen speichern
 instance.save()
