@@ -8,5 +8,5 @@ datasources:
     isDefault: true
     jsonData:
       httpMethod: GET
-      timeInterval: "30s"
+      timeInterval: "15s"
       tlsSkipVerify: true
