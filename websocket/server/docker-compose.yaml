@@ -1,0 +1,9 @@
+services:
+    websocketgithubtrigger:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: websocketGithubTrigger
+        restart: always
+        ports:
+            - "28080:8080"
