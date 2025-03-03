@@ -11,21 +11,23 @@ function connect() {
         ws.send('something');
     });
     ws.on('message', function message(data) {
-        console.log('recived');
-        fetch('http://192.168.178.10:18080/githubtrigger', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
+        console.log('recived: ' + data);
+        if (data != 'something') {
+            fetch('http://192.168.178.10:18080/githubtrigger', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data.payload),
             })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
     });
     ws.on('close', function close() {
         console.log('disconnected: ' + Date.now());
