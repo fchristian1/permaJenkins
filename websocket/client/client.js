@@ -17,9 +17,10 @@ function connect() {
             JSON.parse(data.toString());
         }
         catch (e) {
+            console.log(e);
             return;
         }
-        if (JSON.parse(data).type != 'githubTrigger') {
+        if (JSON.parse(data.toString()).type != 'githubTrigger') {
             console.log('githubTrigger', Date.now());
             //data is a completet express request object
             //send it to the server
