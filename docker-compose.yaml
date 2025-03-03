@@ -21,6 +21,14 @@ services:
             - "13000:3000"
         volumes:
             - grafana_data:/var/lib/grafana
+            - ./provisioning:/etc/grafana/provisioning
+            - ./provisioning/dashboards:/etc/grafana/provisioning/dashboards
+            - ./dashboards:/var/lib/grafana/dashboards
+        environment:
+            - GF_SECURITY_ADMIN_USER=admin
+            - GF_SECURITY_ADMIN_PASSWORD=admin
+        depends_on:
+            - prometheus
     prometheus:
         image: prom/prometheus
         container_name: prometheus
