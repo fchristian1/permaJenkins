@@ -48,6 +48,7 @@ async function getCrumb() {
 async function sendToJenkins(webhookData, headers) {
     try {
         console.log('sendToJenkins');
+        console.log('headers:', headers);
         const eventType = headers['x-github-event'];
         const crumbData = await getCrumb();
         const fetchData = {
