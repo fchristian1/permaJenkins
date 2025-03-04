@@ -48,7 +48,6 @@ async function getCrumb() {
 async function sendToJenkins(webhookData, headers) {
     try {
         console.log('sendToJenkins');
-        console.log('headers:', headers);
         const eventType = headers['x-github-event'];
         const crumbData = await getCrumb();
         const fetchData = {
@@ -57,11 +56,14 @@ async function sendToJenkins(webhookData, headers) {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + Buffer.from(`${JENKINS_USER}:${JENKINS_TOKEN}`).toString('base64'),
                 [crumbData.crumbRequestField]: crumbData.crumb,
-                "X-GitHub-Event": eventType // Event-Typ hinzufügen
+
 
             },
+
             body: JSON.stringify(webhookData),
         };
+        fetchData.headers[fetchData.headers, headers];
+        console.log('headers:', headers);
         console.log('url: ', `${JENKINS_URL}/github-webhook/`, 'fetchData:', fetchData.headers);
         const response = await fetch(`${JENKINS_URL}/github-webhook/`, fetchData);
         if (!response.ok) {
