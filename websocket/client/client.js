@@ -64,7 +64,7 @@ async function sendToJenkins(webhookData, headers) {
             },
             body: JSON.stringify(webhookData),
         };
-        console.log('url: ', `${JENKINS_URL}/github-webhook/`, 'fetchData:', fetchData.headers);
+        console.log('url: ', `${JENKINS_URL}/github-webhook/`, 'fetchData:', fetchData);
         const response = await fetch(`${JENKINS_URL}/github-webhook/`, fetchData);
         if (!response.ok) {
             console.log('Error:', await response.text());
