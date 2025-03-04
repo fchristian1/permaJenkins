@@ -53,7 +53,7 @@ async function getCrump() {
 async function sendToJenkins(webhookData) {
     try {
         const crumbData = await getCrump();
-        const response = await fetch(`${JENKINS_URL}/github-webhook/`, {
+        const response = await fetch(`${JENKINS_URL}/jenkins/github-webhook/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
