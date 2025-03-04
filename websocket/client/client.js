@@ -57,7 +57,7 @@ async function sendToJenkins(webhookData) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": 'Basic ' + btoa(`${JENKINS_USER}:${JENKINS_TOKEN}`),
+                'Authorization': 'Basic ' + btoa(`${JENKINS_USER}:${JENKINS_TOKEN}`),
                 [crumbData.crumbRequestField]: crumbData.crumb,
             },
             body: JSON.stringify(webhookData),
