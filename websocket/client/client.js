@@ -5,8 +5,8 @@ config();
 
 const ws = connect();
 
-const JENKINS_URL = "http://192.168.178.10:18080";
-const JENKINS_USER = "admin";
+const JENKINS_URL = process.env.JENKINS_URL ?? console.error('JENKINS_URL not found in .env file');
+const JENKINS_USER = process.env.JENKINS_USER ?? console.error('JENKINS_USER not found in .env file');
 const JENKINS_TOKEN = process.env.JENKINS_TOKEN ?? console.error('JENKINS_TOKEN not found in .env file');
 
 // Intervallfunktion zum Verbinden mit dem Server
@@ -53,6 +53,7 @@ async function getCrump() {
 async function sendToJenkins(webhookData) {
     try {
         const crumbData = await getCrump();
+        console.log('Crumb Data:', crumbData);
         const response = await fetch(`${JENKINS_URL}/github-webhook/`, {
             method: 'POST',
             headers: {
