@@ -1,61 +1,111 @@
-# jenkins with grafana and prometheus
+# Jenkins with Grafana and Prometheus
 
-A FullAuto docker compose Jenkis runner with Monitoring and Backup
+## Full-Auto Docker Compose Jenkins Runner with Monitoring and Backup
 
-## Local Setup with Websocket Server and Client
+### Features:
+- **Full-Auto Installation**: Jenkins, Grafana, and Prometheus are installed and configured automatically.
+- **Preconfigured Jenkins Setup**:
+  - Jenkins is preconfigured with **user and group permissions**.
+  - **Default Credentials Jenkins**:
+    - Username: `admin`
+    - Password: `admin`
+- **Preinstalled Grafana Dashboard**: Comes with a ready-to-use monitoring dashboard.
+- **Backup & Restore**:
+  - Fully automated scripts to **backup** and **restore** the Jenkins state.
+  - Includes a cron job script to schedule backups automatically.
+- **CI/CD Webhook Integration**:
+  - Uses a **WebSocket server and client** to enable **GitHub webhook triggers** in a local environment **without exposing ports** or requiring GitHub credentials.
+  - Ensures **secure and seamless communication** between GitHub and Jenkins.
+- **Monitoring Setup**:
+  - Jenkins is connected to **Grafana** and **Prometheus** for real-time monitoring and analytics.
+  - Automatically tracks system performance and pipeline executions.
+  - **Default Credentials Grafana**:
+    - Username: `admin`
+    - Password: `admin`
+- **Ready-to-Use & Scalable**: The entire setup is automated, making it easy to deploy and scale.
 
-github webhook -> websocket server -> websocket client -> jenkins
+---
 
-To use a local jenKins with github puch webhook, you need a host in the internet with linux docker to run the websocket-server.
-On the local machine you need to run the websocket-client.
+## Local Setup with WebSocket Server and Client
 
-In Jenkins need to install the plugin "Generic Webhook Trigger Plugin" and configure it to use the websocket-client. use the Token for the URL of the repository to trigger the right jenkins job.
+#### Workflow:
+GitHub Webhook -> WebSocket Server -> WebSocket Client -> Jenkins
 
+To use a local Jenkins instance with GitHub push webhooks, you need an internet-accessible host running a WebSocket server on a Linux machine with Docker. On your local machine, you must run the WebSocket client.
 
-## Using
+#### Why This Approach?
+- When working in a **local environment**, it's often necessary to trigger Jenkins builds using GitHub webhooks **without exposing network ports** or using GitHub credentials.
+- Security concerns prevent direct network exposure, making it difficult to receive webhook calls locally.
+- Using a WebSocket server as a bridge allows communication between GitHub and the local Jenkins instance **without requiring direct access to the local machine**.
+- This method avoids complex networking setups, VPNs, or exposing Jenkins publicly, improving overall security and maintainability.
 
-Startup the jenkins with grafana and prometheus
+### Jenkins Configuration:
+1. Install the **Generic Webhook Trigger Plugin** in Jenkins.
+2. Configure it to use the WebSocket client.
+3. Use the generated token in the repository webhook URL to trigger the correct Jenkins job.
+
+---
+
+## Usage
+
+### Start Jenkins with Grafana and Prometheus
 ```bash
 git clone https://github.com/fchristian1/permaJenkins
 cd permaJenkins
 ./start.sh
 ```
-In the browser go to http://<ip>:18080 for jenkins      http://localhost:18080
-In the browser go to http://<ip>:13000 for grafana      http://localhost:13000
-In the browser go to http://<ip>:19090 for prometheus   http://localhost:19090
 
-Backup scripts are in the backup folder
-To Backup the jenkins data
+### Access Web Interfaces:
+- **Jenkins**: [http://localhost:18080](http://localhost:18080)
+- **Grafana**: [http://localhost:13000](http://localhost:13000)
+- **Prometheus**: [http://localhost:19090](http://localhost:19090)
+
+---
+
+## Backup & Restore
+
+### Backup Jenkins Data:
 ```bash
 cd backup
 ./backup.sh
 ```
-To Restore the jenkins data
+
+### Restore Jenkins Data:
 ```bash
 cd backup
 ./restore.sh
 ```
 
-To add backup to cron.d
+### Automate Backup with Cron:
 ```bash
 ./addCronJob.sh
 ```
 
-## Using with websocket server and client
+---
 
-On Server
+## WebSocket Server and Client Setup
+
+### On the Server:
 ```bash
 git clone https://github.com/fchristian1/permaJenkins
 cd permaJenkins/websocket/server
 docker compose up -d
 ```
 
-On Client
-copy the env file to .env and edit the file
+### On the Client:
+1. Copy and edit the environment file:
 ```bash
 git clone https://github.com/fchristian1/permaJenkins
 cd permaJenkins/websocket/client
 cp env .env
 vi .env
+```
+2. Start the WebSocket client:
+```bash
 docker compose up -d
 ```
+
+---
+
+This setup provides an automated CI/CD environment with monitoring and backup capabilities, integrating Jenkins with GitHub webhooks via WebSocket communication while maintaining security and flexibility in local development setups.
+
