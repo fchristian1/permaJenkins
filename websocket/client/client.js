@@ -64,7 +64,7 @@ async function sendToJenkins(webhookData) {
             body: JSON.stringify(webhookData),
         });
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${JSON.stringify(response)}`);
+            throw new Error(`HTTP error! status: ${JSON.stringify(response.body)}`);
         }
         console.log('Success send Data to Jenkins:', response);
 
