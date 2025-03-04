@@ -19,10 +19,9 @@ function connect() {
         ws.send('something');
     });
     ws.on('message', function message(data) {
-        console.log("[" + Date.now() + "] [INFO]", 'received: %s', data.toString().includes('githubTrigger'));
+        console.log("[" + Date.now() + "] [INFO]", 'received a githubTrigger ?:', data.toString().includes('githubTrigger'));
 
         if (data.toString().includes('githubTrigger') && JSON.parse(data.toString()).type == 'githubTrigger') {
-            console.log("[" + Date.now() + "] [INFO]", 'githubTrigger');
             sendToJenkins(JSON.parse(data.toString()).payload, JSON.parse(data.toString()).headers);
         }
     });
