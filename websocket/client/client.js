@@ -45,7 +45,7 @@ async function getCrumb() {
     return await response.json();
 }
 
-async function sendToJenkins(webhookData) {
+async function sendToJenkins(webhookData, eventType) {
     try {
         const crumbData = await getCrumb();
         const fetchData = {
@@ -54,6 +54,8 @@ async function sendToJenkins(webhookData) {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + Buffer.from(`${JENKINS_USER}:${JENKINS_TOKEN}`).toString('base64'),
                 [crumbData.crumbRequestField]: crumbData.crumb,
+                "X-GitHub-Event": eventType // Event-Typ hinzufügen
+
             },
             body: JSON.stringify(webhookData),
         };
