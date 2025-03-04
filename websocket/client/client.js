@@ -1,6 +1,13 @@
 import WebSocket from "ws";
+import { config } from "dotenv";
+
+config();
 
 const ws = connect();
+
+const JENKINS_URL = "http://192.168.1778.10:18080";
+const JENKINS_USER = "admin";
+const JENKINS_TOKEN = process.env.JENKINS_TOKEN ?? console.error('JENKINS_TOKEN not found in .env file');
 
 // Intervallfunktion zum Verbinden mit dem Server
 function connect() {
@@ -18,20 +25,7 @@ function connect() {
             console.log('githubTrigger', Date.now());
             //data is a completet express request object
             //send it to the server
-            fetch('http://192.168.178.10:18080/jenkins/github-webhook/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data.payload),
-            })
-                .then(response => response.text())
-                .then(data => {
-                    console.log('Success:', data);
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+            sendToJenkins(JSON.parse(data.toString()).payload);
         }
     });
     ws.on('close', function close() {
@@ -39,4 +33,41 @@ function connect() {
         setTimeout(connect, 1000);
     });
     return ws;
+}
+
+async function getCrump() {
+
+
+    const response = await fetch(`${JENKINS_URL}/crumbIssuer/api/json`, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Basic ' + btoa(`${JENKINS_USER}:${JENKINS_TOKEN}`),
+        },
+    });
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+}
+
+async function sendToJenkins(webhookData) {
+    try {
+        const crumbData = await getCrump();
+        const response = await fetch(`${JENKINS_URL}/github-webhook/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": 'Basic ' + btoa(`${JENKINS_USER}:${JENKINS_TOKEN}`),
+                [crumbData.crumbRequestFiled]: crumbData.crumb,
+            },
+            body: JSON.stringify(webhookData),
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        console.log('Success send Data to Jenkins:', response);
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
