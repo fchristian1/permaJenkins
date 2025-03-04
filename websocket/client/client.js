@@ -47,7 +47,7 @@ async function getCrumb() {
 
 async function sendToJenkins(webhookData, headers) {
     try {
-        console.log('sendToJenkins');
+        console.log("[" + Date.now() + "] [INFO]", 'sendToJenkins');
         const crumbData = await getCrumb();
         const fetchData = {
             method: 'POST',
@@ -64,7 +64,7 @@ async function sendToJenkins(webhookData, headers) {
             },
             body: JSON.stringify(webhookData),
         };
-        console.log('url: ', `${JENKINS_URL}/generic-webhook-trigger/invoke`, 'fetchData:', JSON.stringify(webhookData, null, 2));
+        //console.log('url: ', `${JENKINS_URL}/generic-webhook-trigger/invoke`, 'fetchData:', JSON.stringify(webhookData, null, 2));
         const response = await fetch(`${JENKINS_URL}/generic-webhook-trigger/invoke`, fetchData);
         if (!response.ok) {
             console.log('Error:', await response.text());
