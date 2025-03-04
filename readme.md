@@ -1,6 +1,6 @@
-# Jenkins with Grafana and Prometheus
+# Jenkins with Grafana Prometheus and Websocket
 
-## Full-Auto Install Jenkins Runner with Monitoring Backup and Websocket Server and Client as a bridge for GitHub Webhook to local Jenkins instance.
+## Full-Auto Install Jenkins with Websocket as a bridge for GitHub Webhook to local Jenkins instance.
 
 ### Features:
 - **Full-Auto Installation**: Jenkins, Grafana, and Prometheus are installed and configured automatically.
