@@ -60,6 +60,7 @@ async function sendToJenkins(webhookData, headers) {
                 "x-github-hook-id": headers['x-github-hook-id'],
                 "x-github-hook-installation-target-id": headers['x-github-hook-installation-target-id'],
                 "x-github-hook-installation-target-type": headers['x-github-hook-installation-target-type'],
+                token: webhookData.repository.url,
             },
             body: JSON.stringify(webhookData),
         };
