@@ -1,6 +1,6 @@
 # Jenkins with Grafana and Prometheus
 
-## Full-Auto Docker Compose Jenkins Runner with Monitoring and Backup
+## Full-Auto Install Jenkins Runner with Monitoring Backup and Websocket Server and Client as a bridge for GitHub Webhook to local Jenkins instance.
 
 ### Features:
 - **Full-Auto Installation**: Jenkins, Grafana, and Prometheus are installed and configured automatically.
