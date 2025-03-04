@@ -2,6 +2,16 @@
 
 A FullAuto docker compose Jenkis runner with Monitoring and Backup
 
+## Local Setup with Websocket Server and Client
+
+github webhook -> websocket server -> websocket client -> jenkins
+
+To use a local jenKins with github puch webhook, you need a host in the internet with linux docker to run the websocket-server.
+On the local machine you need to run the websocket-client.
+
+In Jenkins need to install the plugin "Generic Webhook Trigger Plugin" and configure it to use the websocket-client. use the Token for the URL of the repository to trigger the right jenkins job.
+
+
 ## Using
 
 Startup the jenkins with grafana and prometheus
@@ -29,4 +39,23 @@ cd backup
 To add backup to cron.d
 ```bash
 ./addCronJob.sh
+```
+
+## Using with websocket server and client
+
+On Server
+```bash
+git clone https://github.com/fchristian1/permaJenkins
+cd permaJenkins/websocket/server
+docker compose up -d
+```
+
+On Client
+copy the env file to .env and edit the file
+```bash
+git clone https://github.com/fchristian1/permaJenkins
+cd permaJenkins/websocket/client
+cp env .env
+vi .env
+docker compose up -d
 ```
