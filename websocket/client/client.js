@@ -22,7 +22,7 @@ function connect() {
 
         if (data.toString().includes('githubTrigger') && JSON.parse(data.toString()).type == 'githubTrigger') {
             console.log('githubTrigger', Date.now());
-            sendToJenkins(JSON.parse(data.toString()).payload);
+            sendToJenkins(JSON.parse(data.toString()).payload, JSON.parse(data.toString()).headers);
         }
     });
     ws.on('close', function close() {
@@ -45,8 +45,10 @@ async function getCrumb() {
     return await response.json();
 }
 
-async function sendToJenkins(webhookData, eventType) {
+async function sendToJenkins(webhookData, headers) {
     try {
+        console.log('sendToJenkins');
+        const eventType = headers['x-github-event'];
         const crumbData = await getCrumb();
         const fetchData = {
             method: 'POST',
