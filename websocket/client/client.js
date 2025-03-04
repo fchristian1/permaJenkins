@@ -72,6 +72,5 @@ async function sendToJenkins(webhookData, headers) {
         console.log('Success send Data to Jenkins:', response);
     } catch (error) {
         console.error('Error:', error);
-
     }
 }
