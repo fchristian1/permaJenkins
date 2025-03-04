@@ -5,7 +5,7 @@ config();
 
 const ws = connect();
 
-const JENKINS_URL = "http://192.168.1778.10:18080";
+const JENKINS_URL = "http://192.168.178.10:18080";
 const JENKINS_USER = "admin";
 const JENKINS_TOKEN = process.env.JENKINS_TOKEN ?? console.error('JENKINS_TOKEN not found in .env file');
 
