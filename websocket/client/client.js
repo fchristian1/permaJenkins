@@ -52,14 +52,15 @@ async function sendToJenkins(webhookData) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Basic ' + Buffer.from(`${JENKINS_USER}:${JENKINS_TOKEN}`).toString('base64'),
-                //  [crumbData.crumbRequestField]: crumbData.crumb,
+                'Authorization': 'Basic ' + Buffer.from(`${JENKINS_USER}:${JENKINS_TOKEN}`).toString('base64'),
+                [crumbData.crumbRequestField]: crumbData.crumb,
             },
             body: JSON.stringify(webhookData),
         };
         console.log('url: ', `${JENKINS_URL}/github-webhook/`, 'fetchData:', fetchData.headers);
         const response = await fetch(`${JENKINS_URL}/github-webhook/`, fetchData);
         if (!response.ok) {
+            console.log('Error:', await response.text());
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         console.log('Success send Data to Jenkins:', response);
