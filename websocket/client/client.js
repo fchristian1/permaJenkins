@@ -53,7 +53,7 @@ async function sendToJenkins(webhookData) {
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': 'Basic ' + Buffer.from(`${JENKINS_USER}:${JENKINS_TOKEN}`).toString('base64'),
-                // [crumbData.crumbRequestField]: crumbData.crumb,
+                //  [crumbData.crumbRequestField]: crumbData.crumb,
             },
             body: JSON.stringify(webhookData),
         };
