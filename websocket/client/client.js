@@ -12,6 +12,7 @@ function connect() {
     });
     ws.on('message', function message(data) {
         console.log('received: %s', data);
+        console.log('received: %s', data.toString().includes('githubTrigger'));
 
         if (data.toString().includes('githubTrigger') && JSON.parse(data.toString()).type != 'githubTrigger') {
             console.log('githubTrigger', Date.now());
