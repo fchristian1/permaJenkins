@@ -39,12 +39,18 @@ To use a local Jenkins instance with GitHub push webhooks, you need an internet-
 - Using a WebSocket server as a bridge allows communication between GitHub and the local Jenkins instance **without requiring direct access to the local machine**.
 - This method avoids complex networking setups, VPNs, or exposing Jenkins publicly, improving overall security and maintainability.
 
-### Jenkins Configuration:
-1. Install the **Generic Webhook Trigger Plugin** in Jenkins.
-2. Configure it to use the WebSocket client.
-3. Use the generated token in the repository webhook URL to trigger the correct Jenkins job.
-
+### Jenkins Job Configuration:
+1. **Create a Jenkins Job**:
+   - Create a new Jenkins job and configure it as needed.
+   - Enable **Generic Webhook Trigger**:
+     - In Token enter the repository url 'https://github.com/fchristian1/permaJenkins' without quotes and / at the end.
+2. **Configure GitHub Webhook**:
+   - In the GitHub repository settings, add a new webhook.
+   - Set the Payload URL to the WebSocket server URL. "http://<server-ip>:18080/githubtrigger"
+   - Set the Content type to `application/json`.
+   - Select the events to trigger the webhook.
 ---
+Test the setup by pushing a commit to the repository. The WebSocket server should receive the webhook and forward it to the WebSocket client, which triggers the Jenkins job.
 
 ## Usage
 
